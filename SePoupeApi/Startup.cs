@@ -5,6 +5,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using SePoupeApi.Data.Interfaces;
+using SePoupeApi.Data.Repositories;
 using SePoupeApi.Services.Configurations;
 using System;
 using System.Collections.Generic;
@@ -31,6 +33,12 @@ namespace SePoupeApi
             //Getting connectionstring
             var connectionstring = Configuration.GetConnectionString("Context_DB");
 
+            //Dependency injection
+            services.AddTransient<IPontosRepository, PontosRepository>(map => new PontosRepository(connectionstring));
+            services.AddTransient<IUsuarioRepository, UsuarioRepository>(map => new UsuarioRepository(connectionstring));
+
+
+
             SwaggerConfiguration.ConfigureServices(services);
 
             //Configure CORS
@@ -43,8 +51,6 @@ namespace SePoupeApi
 
                 })
                 );
-
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,9 +60,10 @@ namespace SePoupeApi
             {
                 app.UseDeveloperExceptionPage();
             }
+            //Configure api documentation(swagger) including initial config
 
             app.UseSwagger();
-            app.UseSwaggerUI(s => { s.SwaggerEndpoint("/swagger/v1/swagger.json", "User auth"); });
+            app.UseSwaggerUI(s => { s.SwaggerEndpoint("/swagger/v1/swagger.json", "Se Poupe"); });
 
 
             app.UseRouting();

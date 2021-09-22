@@ -18,16 +18,18 @@ namespace SePoupeApi.Services.Configurations
                 {
                     swagger.SwaggerDoc("v1", new OpenApiInfo
                     {
-                        Title = "Se Poupe API.",
+                        Title = "Se Poupe  API.",
                         Description = "Project using AspNet 5 API, SQL Server and Dapper.",
                         Version = "v1",
                         Contact = new OpenApiContact
                         {
-                            Name = "Se Poupe",
+                            Name = "Se Poupe"
                         }
                     });
                 }
                 );
         }
+
+
     }
 }

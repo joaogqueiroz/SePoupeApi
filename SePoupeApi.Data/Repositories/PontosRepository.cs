@@ -1,13 +1,17 @@
 ﻿using Dapper;
+using MySql.Data.MySqlClient;
 using SePoupeApi.Data.Entities;
 using SePoupeApi.Data.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace SePoupeApi.Data.Repositories
 {
-    class PontosRepository : IPontosRepository
+    public class PontosRepository : IPontosRepository
     {
 
         private readonly string _connectionString;
@@ -31,7 +35,7 @@ namespace SePoupeApi.Data.Repositories
                     @Nivel3,
                     @IdUsuario)";
 
-            using (var connetionString = new SqlConnection(_connectionString))
+            using (var connetionString = new MySqlConnection(_connectionString))
             {
                 connetionString.Execute(query, pontos);
             }
@@ -39,16 +43,15 @@ namespace SePoupeApi.Data.Repositories
 
         public List<Pontos> Read()
         {
-            var query = @"SELECT * FROM Pontos
-                          ORDER BY NAME";
+            var query = @"SELECT * FROM Pontos";
 
-            using (var connection = new SqlConnection(_connectionString))
+            using (var connection = new MySqlConnection(_connectionString))
             {
                 return connection.Query<Pontos>(query).ToList();
             }
         }
 
-        
+
         public void Update(Pontos pontos)
         {
             var query = @" 
@@ -58,7 +61,7 @@ namespace SePoupeApi.Data.Repositories
                     Nivel3 = @Nivel3,                    
                 WHERE
                     IdPontos = @IdPontos";
-            using (var connetionString = new SqlConnection(_connectionString))
+            using (var connetionString = new MySqlConnection(_connectionString))
             {
                 connetionString.Execute(query, pontos);
             }
@@ -68,7 +71,7 @@ namespace SePoupeApi.Data.Repositories
         {
             var query = @"DELETE FROM Pontos
                           WHERE IdPontos = @IdPontos";
-            using (var connection = new SqlConnection(_connectionString))
+            using (var connection = new MySqlConnection(_connectionString))
             {
                 connection.Execute(query, pontos);
             }
@@ -79,7 +82,7 @@ namespace SePoupeApi.Data.Repositories
             var query = @"SELECT * FROM Pontos
                           WHERE Pontos = @Pontos";
 
-            using (var connection = new SqlConnection(_connectionString))
+            using (var connection = new MySqlConnection(_connectionString))
             {
                 return connection.Query<Pontos>(query, new { pontosID }).FirstOrDefault();
             }
