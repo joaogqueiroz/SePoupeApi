@@ -31,13 +31,15 @@ namespace SePoupeApi.Services.Controllers
                 usuario.Nome = model.Nome;
                 usuario.Senha = model.Senha;
                 usuario.CPF = model.CPF;
+                usuario.Email = model.Email;
                 usuario.Sexo = model.Sexo.ToString();
                 usuario.Tipo = model.Tipo.ToString();
                 usuario.Nascimento = model.Nascimento;
 
                 _usuarioRepository.Create(usuario);
+                var userId =_usuarioRepository.getByEmail(model.Email);
 
-                return Ok($"Uusario {usuario.Nome},foi criado com sucesso");
+                return Ok($"Usario {usuario.Nome} com o id {userId},foi criado com sucesso");
 
             }
             catch (Exception e)
@@ -59,6 +61,7 @@ namespace SePoupeApi.Services.Controllers
                     usuario.Nome = model.Nome;
                     usuario.Senha = model.Senha;
                     usuario.CPF = model.CPF;
+                    usuario.Email = model.Email;
                     usuario.Sexo = model.Sexo.ToString();
                     usuario.Tipo = model.Tipo.ToString();
                     usuario.Nascimento = model.Nascimento;

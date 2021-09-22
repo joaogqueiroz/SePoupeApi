@@ -26,13 +26,15 @@ namespace SePoupeApi.Data.Repositories
                 Nome,
                 Senha,
                 CPF,
+                Email,
                 Sexo,
                 Tipo,
                 Nascimento)
             VALUES(
                 @Nome,
-                CONVERT(VARCHAR(32), HASHBYTES('MD5', @Senha), 2),
+                Senha,
                 @CPF,
+                @Email,
                 @Sexo,
                 @Tipo,
                 @Nascimento)";
@@ -58,7 +60,7 @@ namespace SePoupeApi.Data.Repositories
             var query = @" 
                 UPDATE Usuario SET
                     Nome = @Nome,
-                    Senha = CONVERT(VARCHAR(32), HASHBYTES('MD5', @Senha), 2),
+                    Senha = MD5(@Senha),
                     CPF = @CPF,
                     Sexo = @Sexo,
                     Tipo = @Tipo,
@@ -90,6 +92,16 @@ namespace SePoupeApi.Data.Repositories
             using (var connection = new MySqlConnection(_connectionString))
             {
                 return connection.Query<Usuario>(query, new { usuarioID }).FirstOrDefault();
+            }
+        }
+        public Usuario getByEmail(string Email)
+        {
+            var query = @"SELECT IdUsuario FROM Usuario
+                          WHERE Email = @Email";
+
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                return connection.Query<Usuario>(query, new { Email }).FirstOrDefault();
             }
         }
     }

@@ -14,5 +14,6 @@ namespace SePoupeApi.Data.Interfaces
         void Update(Usuario usuario);
         void Delete(Usuario usuario);
         Usuario getByID(int usuarioID);
+        Usuario getByEmail(string Email);
     }
 }
