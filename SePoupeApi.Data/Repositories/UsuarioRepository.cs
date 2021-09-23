@@ -12,11 +12,13 @@ namespace SePoupeApi.Data.Repositories
 {
     public class UsuarioRepository : IUsuarioRepository
     {
-        private readonly string _connectionString;
+        private readonly string _context_UsuarioDB;
+        private readonly string Context_QuestoesDB;
 
-        public UsuarioRepository(string connectionString)
+        public UsuarioRepository(string context_UsuarioDB, string context_QuestoesDB)
         {
-            _connectionString = connectionString;
+            _context_UsuarioDB = context_UsuarioDB;
+            Context_QuestoesDB = context_QuestoesDB;
         }
 
         public void Create(Usuario usuario)
@@ -32,14 +34,14 @@ namespace SePoupeApi.Data.Repositories
                 Nascimento)
             VALUES(
                 @Nome,
-                Senha,
+                @Senha,
                 @CPF,
                 @Email,
                 @Sexo,
                 @Tipo,
                 @Nascimento)";
 
-            using (var connetionString = new MySqlConnection(_connectionString))
+            using (var connetionString = new MySqlConnection(_context_UsuarioDB))
             {
                 connetionString.Execute(query, usuario);
             }
@@ -49,7 +51,7 @@ namespace SePoupeApi.Data.Repositories
             var query = @"SELECT * FROM Usuario
                           ORDER BY nome";
 
-            using (var connection = new MySqlConnection(_connectionString))
+            using (var connection = new MySqlConnection(_context_UsuarioDB))
             {
                 return connection.Query<Usuario>(query).ToList();
             }
@@ -67,7 +69,7 @@ namespace SePoupeApi.Data.Repositories
                     Nascimento = @Nascimento,
                 WHERE
                     IdUsuario = @IdUsuario";
-            using (var connetionString = new MySqlConnection(_connectionString))
+            using (var connetionString = new MySqlConnection(_context_UsuarioDB))
             {
                 connetionString.Execute(query, usuario);
             }
@@ -78,7 +80,7 @@ namespace SePoupeApi.Data.Repositories
         {
             var query = @"DELETE FROM Usuario
                           WHERE IdUsuario = @IdUsuario";
-            using (var connection = new MySqlConnection(_connectionString))
+            using (var connection = new MySqlConnection(_context_UsuarioDB))
             {
                 connection.Execute(query, usuario);
             }
@@ -89,7 +91,7 @@ namespace SePoupeApi.Data.Repositories
             var query = @"SELECT * FROM Usuario
                           WHERE usuarioID = @usuarioID";
 
-            using (var connection = new MySqlConnection(_connectionString))
+            using (var connection = new MySqlConnection(_context_UsuarioDB))
             {
                 return connection.Query<Usuario>(query, new { usuarioID }).FirstOrDefault();
             }
@@ -99,7 +101,7 @@ namespace SePoupeApi.Data.Repositories
             var query = @"SELECT IdUsuario FROM Usuario
                           WHERE Email = @Email";
 
-            using (var connection = new MySqlConnection(_connectionString))
+            using (var connection = new MySqlConnection(_context_UsuarioDB))
             {
                 return connection.Query<Usuario>(query, new { Email }).FirstOrDefault();
             }

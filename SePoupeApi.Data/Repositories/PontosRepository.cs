@@ -14,11 +14,13 @@ namespace SePoupeApi.Data.Repositories
     public class PontosRepository : IPontosRepository
     {
 
-        private readonly string _connectionString;
+        private readonly string _context_UsuarioDB;
+        private readonly string Context_QuestoesDB;
 
-        public PontosRepository(string connectionString)
+        public PontosRepository(string context_UsuarioDB, string context_QuestoesDB)
         {
-            _connectionString = connectionString;
+            _context_UsuarioDB = context_UsuarioDB;
+            Context_QuestoesDB = context_QuestoesDB;
         }
 
         public void Create(Pontos pontos)
@@ -35,7 +37,7 @@ namespace SePoupeApi.Data.Repositories
                     @Nivel3,
                     @IdUsuario)";
 
-            using (var connetionString = new MySqlConnection(_connectionString))
+            using (var connetionString = new MySqlConnection(_context_UsuarioDB))
             {
                 connetionString.Execute(query, pontos);
             }
@@ -45,7 +47,7 @@ namespace SePoupeApi.Data.Repositories
         {
             var query = @"SELECT * FROM Pontos";
 
-            using (var connection = new MySqlConnection(_connectionString))
+            using (var connection = new MySqlConnection(_context_UsuarioDB))
             {
                 return connection.Query<Pontos>(query).ToList();
             }
@@ -61,7 +63,7 @@ namespace SePoupeApi.Data.Repositories
                     Nivel3 = @Nivel3,                    
                 WHERE
                     IdPontos = @IdPontos";
-            using (var connetionString = new MySqlConnection(_connectionString))
+            using (var connetionString = new MySqlConnection(_context_UsuarioDB))
             {
                 connetionString.Execute(query, pontos);
             }
@@ -71,7 +73,7 @@ namespace SePoupeApi.Data.Repositories
         {
             var query = @"DELETE FROM Pontos
                           WHERE IdPontos = @IdPontos";
-            using (var connection = new MySqlConnection(_connectionString))
+            using (var connection = new MySqlConnection(_context_UsuarioDB))
             {
                 connection.Execute(query, pontos);
             }
@@ -82,7 +84,7 @@ namespace SePoupeApi.Data.Repositories
             var query = @"SELECT * FROM Pontos
                           WHERE Pontos = @Pontos";
 
-            using (var connection = new MySqlConnection(_connectionString))
+            using (var connection = new MySqlConnection(_context_UsuarioDB))
             {
                 return connection.Query<Pontos>(query, new { pontosID }).FirstOrDefault();
             }

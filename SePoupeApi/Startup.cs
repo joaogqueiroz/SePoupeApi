@@ -31,11 +31,12 @@ namespace SePoupeApi
             services.AddControllers();
 
             //Getting connectionstring
-            var connectionstring = Configuration.GetConnectionString("Context_DB");
+            var Context_UsuarioDB = Configuration.GetConnectionString("Context_DB");
+            var Context_QuestoesDB = Configuration.GetConnectionString("Context_QuestoesDB");
 
             //Dependency injection
-            services.AddTransient<IPontosRepository, PontosRepository>(map => new PontosRepository(connectionstring));
-            services.AddTransient<IUsuarioRepository, UsuarioRepository>(map => new UsuarioRepository(connectionstring));
+            services.AddTransient<IPontosRepository, PontosRepository>(map => new PontosRepository(Context_UsuarioDB, Context_QuestoesDB));
+            services.AddTransient<IUsuarioRepository, UsuarioRepository>(map => new UsuarioRepository(Context_UsuarioDB, Context_QuestoesDB));
 
 
 
