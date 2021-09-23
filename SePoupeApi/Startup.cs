@@ -31,7 +31,7 @@ namespace SePoupeApi
             services.AddControllers();
 
             //Getting connectionstring
-            var Context_UsuarioDB = Configuration.GetConnectionString("Context_DB");
+            var Context_UsuarioDB = Configuration.GetConnectionString("Context_UsuarioDB");
             var Context_QuestoesDB = Configuration.GetConnectionString("Context_QuestoesDB");
 
             //Dependency injection
